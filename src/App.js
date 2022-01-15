@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import Dropdown from "./components/Dropdown";
+import Footer from "./components/Footer";
+import GridList from "./components/GridList";
+import { getUsers } from "./helpers/fetch";
 
-function App() {
+
+
+
+const App = () => {
+
+  const [users, setUsers] = useState([]);
+  const [userSelected, setUserSelected] = useState();
+  useEffect(() => {
+    const getData = async()=>{
+      const response = await getUsers();
+      setUsers(response.data);
+    }
+    getData();
+    
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1 className="text-primary">Kento System Test</h1>
+      <hr />
+      <Dropdown users={users} setUserSelected={setUserSelected}/>
+      {userSelected && <GridList user={userSelected}/>}
+      <Footer />
     </div>
-  );
+
+  )
 }
 
 export default App;
